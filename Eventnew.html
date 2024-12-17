@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Data Entry Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Event Data Entry Form</h2>
+    <form method="POST" action="submit_event.php">
+        <label for="venue_id">Venue:</label>
+        <select id="venue_id" name="venue_id" required>
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <label for="title">Event Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" id="start_time" name="start_time" required>
+
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" id="end_time" name="end_time" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea>
+
+        <label for="early_bird_discount">Early Bird Discount:</label>
+        <input type="number" id="early_bird_discount" name="early_bird_discount" step="0.01" min="0">
+
+        <label for="last_minute_deal">Last Minute Deal:</label>
+        <input type="number" id="last_minute_deal" name="last_minute_deal" step="0.01" min="0">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // Fetch and populate venue options dynamically
+        fetch('get_venues.php')
+            .then(response => response.json())
+            .then(data => {
+                const venueSelect = document.getElementById('venue_id');
+                data.forEach(venue => {
+                    const option = document.createElement('option');
+                    option.value = venue.venue_id;
+                    option.textContent = venue.name;
+                    venueSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching venues:', error));
+    </script>
+</body>
+</html>

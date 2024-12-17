@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Book a table</h2>
+    <form method="POST" action="insert_booking.php">
+        <label for="user_id">User:</label>
+        <select id="user_id" name="user_id" required>
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <label for="table_id">Table:</label>
+        <select id="table_id" name="table_id" required>
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <label for="event_id">Event:</label>
+        <select id="event_id" name="event_id" required>
+            <!-- Options will be populated dynamically -->
+        </select>
+        
+        <label for="Booking_date">Booking Date:</label>
+        <!--<input type="datetime-local" id="booking_date" name="booking_date" required>-->
+        <select id="dateDropdown">
+
+        </select>
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+
+        <label for="total_price">Total Price:</label>
+        <input type="number" id="total_price" name="total_price" required step="0.01" min="0">
+
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        // JavaScript to restrict specific dates for the booking date input
+        document.addEventListener("DOMContentLoaded", function() {
+            const dateInput = document.getElementById("booking_date");
+
+            // Specific dates you want to allow (in YYYY-MM-DD format)
+            const allowedDates = ["2024-12-15", "2024-12-20", "2024-12-25"];
+            const dropdown = document.getElementById("dateDropdown");
+            allowedDates.forEach(date =>{
+                const option = document.createElement("option")
+                option.value = date;
+                option.textContent = date;
+                dropdown.appendChild(option);
+            });
+
+            // Set a custom date picker restriction
+            dateInput.addEventListener("focus", function() {
+                let currentDate = new Date();
+                let formattedDate = currentDate.toISOString().split("T")[0];
+
+                // Set the min and max date to allow
+                dateInput.setAttribute("min", formattedDate); // Today
+                dateInput.setAttribute("max", "2024-12-31"); // End of December
+            });
+
+            // Restrict to specific dates only
+            dateInput.addEventListener("input", function() {
+                const selectedDate = dateInput.value.split("T")[0]; // Get only the date part
+                if (!allowedDates.includes(selectedDate)) {
+                    alert("Selected date is not available. Please select a valid date.");
+                    dateInput.value = ""; // Clear the invalid selection
+                }
+            });
+        });
+    </script>
+    <script>
+        // Populate dropdowns dynamically
+        async function fetchData(endpoint, elementId) {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            const selectElement = document.getElementById(elementId);
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.name;
+                selectElement.appendChild(option);
+            });
+        }
+
+        fetchData('get_users.php', 'user_id');
+        fetchData('get_tables.php', 'table_id');
+        fetchData('get_events.php', 'event_id');
+    </script>
+</body>
+</html>

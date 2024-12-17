@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal</title>
+    <link rel="stylesheet" href="useradmin.css">
+    <style>
+        .avatar {
+            border-radius: 50%;
+            width: 40px;
+        }
+
+        .main-container {
+            display: flex;
+        }
+
+        .vertical-navbar {
+            width: 250px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="horizontal-navbar bg-primary text-white d-flex justify-content-between p-3">
+        <h1> NC Homecare Admin Portal</h1>
+        <div class="dropdown">
+            <img src="./avatar.png" class="avatar" id="avatar" alt="Avatar">
+            <span class="username"><?php echo htmlspecialchars($user['first_name']); ?></span>
+            <div class="dropdown-content">
+                <a href="#" onclick="loadContent('profile')"><i class="fas fa-user"></i> Profile</a>
+                <a href="#" onclick="loadContent('settings')"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <nav class="vertical-navbar bg-light border">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="#" class="nav-link" onclick="loadContent('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="loadContent('messages')"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="loadContent('jobs')"><i class="fas fa-briefcase"></i> Hirings</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="loadContent('profile')"><i class="fas fa-user"></i> View Profiles</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="loadContent('settings')"><i class="fas fa-cogs"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-content" id="content-area">
+            <h1>Welcome to the NC Homecare User Admin Portal</h1>
+        </div>
+    </div>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>-->
+
+</body>
+
+</html>
